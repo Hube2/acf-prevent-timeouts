@@ -131,7 +131,10 @@
 				wp_no_robots();
 			}
 		?>
-		<title>Processing Request</title>
+		<title><?php 
+			$text = 'Processing Request';
+			echo apply_filters('acf/prevent-timeout/timeout-page/title', $text); 
+		?></title>
 		<script type="text/javascript" src="<?php 
 			echo 	includes_url('js/jquery/jquery.js');
 			?>"></script>
@@ -289,7 +292,7 @@
 	<body id="error-page">
 		<h1><?php 
 			$text = 'Your Request is Being Processed';
-			echo apply_filters('acf/prevent-timeout/timeout-page/title', $text); ?></h1>
+			echo apply_filters('acf/prevent-timeout/timeout-page/heading', $text); ?></h1>
 		<p class="message">
 			<?php 
 				$text = 'It is taking longer than expected to process your request.';
