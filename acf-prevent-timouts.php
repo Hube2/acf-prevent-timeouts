@@ -68,7 +68,6 @@
 			}
 			// timed out
 			$this->output_and_continue();
-			//echo 'output and continue<br />';
 			$this->timed_out = true;
 			$this->update_option();
 			// remove this filter and add a filter to check for errors
@@ -86,7 +85,6 @@
 		public function count_fields_processed($value, $post_id, $field) {
 			// this function will only run when max time is exceeded
 			$this->fields_processed++;
-			//echo 'update_field: '.$this->fields_processed.'<br />';
 			$this->update_option();
 			return $value;
 		} // end private function public
@@ -316,8 +314,6 @@
 		} // end public function timout_page
 		
 		public function refresh() {
-			//echo 'here'; exit;
-			//echo json_encode($_GET); exit;
 			$this->id = $_GET['id'];
 			$this->get_option();
 			if ($_GET['set_clear'] == 'false') {
@@ -374,7 +370,6 @@
 		public function acf_save_post_after($post_id) {
 			// this function will only be called if max time was exceeded
 			// acf save timed out
-			//echo 'after acf<br />';
 			$this->complete = true;
 			$this->update_option();
 			// add a filter to grab the ridirect url so it can be passed to timeout page
@@ -385,8 +380,7 @@
 			// this action will be called when wp_redirect is called
 			// it will clear the flag and set the redirect value
 			// to send on the next ajax request
-			//echo 'redirect = '.$location;
-			// grap the redirect and store it to pass to the timeout page and then exit
+			// grab the redirect and store it to pass to the timeout page and then exit
 			$this->redirect = $location;
 			$this->update_option();
 			exit;
