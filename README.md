@@ -4,9 +4,9 @@ This plugin is for use with Advanced Custom Fields (ACF) and will work with any 
 that includes the hooks 'acf/save_post' and 'acf/update_value'. As far as I know this means any
 version of ACF past or future.
 
-Have you ever created an extremely complex ACF field groups for something like a page builder?
+Have you ever created an extremely complex ACF field group for something like a page builder?
 One day someone is editing a page and they've added more content and fields into the repeaters
-and flexible content than it can handle and when they save it the page just times out?
+and flexible content than it can handle and when they save it the page just times out.
 
 This pluign is a means to prevent this situation. This plugin does not speed up the process of saving
 the updates, but it does prevent the timeout error situation by intervening when the save process is
@@ -21,11 +21,11 @@ complete then the user is sent on there way to the page that they were supposed 
 Please note again, like I said above, this plugin does not correct the issue in ACF assocaited with
 saving many custom fields. The bigger problem for me is the timeout that happens when the number of
 fields becomes too large. While a slow admin may be a little frustrating to some, an admin page
-that crashes is unexceptable. I may not be able to speed things up I can stop the page from crashing.
+that crashes is unexceptable. I may not be able to speed things up but I can stop the page from crashing.
 
 ## Important Note
 
-Please ensure that your site and all ACF save processes are working correctly and without any error
+Please ensure that your site and all ACF save processes are working correctly and without any errors
 before activating this pluging. Any errors that may occur when the temporary page is being shown
 will not be visible. These errors can prevent the correct saving of custom field data.
 

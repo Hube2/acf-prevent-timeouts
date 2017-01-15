@@ -30,11 +30,11 @@ complete then the user is sent on there way to the page that they were supposed 
 Please note again, like I said above, this plugin does not correct the issue in ACF assocaited with
 saving many custom fields. The bigger problem for me is the timeout that happens when the number of
 fields becomes too large. While a slow admin may be a little frustrating to some, an admin page
-that crashes is unexceptable. I may not be able to speed things up I can stop the page from crashing.
+that crashes is unexceptable. I may not be able to speed things up but I can stop the page from crashing.
 
 ***Important Note***
 
-Please ensure that your site and all ACF save processes are working correctly and without any error
+Please ensure that your site and all ACF save processes are working correctly and without any errors
 before activating this pluging. Any errors that may occur when the temporary page is being shown
 will not be visible. These errors can prevent the correct saving of custom field data.
 
