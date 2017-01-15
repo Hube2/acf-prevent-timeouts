@@ -2,8 +2,8 @@
 
 	/*
 		Plugin Name: ACF Prevent Timeouts
-		Plugin URI: https://github.com/Hube2/acf-fast-save
-		GitHub Plugin URI: https://github.com/Hube2/acf-fast-save
+		Plugin URI: https://github.com/Hube2/acf-prevent-timeouts
+		GitHub Plugin URI: https://github.com/Hube2/acf-prevent-timeouts
 		Description: Eliminates ACF Timout Issues
 		Version: 0.0.1
 		Author: John A. Huebner II
