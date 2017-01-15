@@ -1,4 +1,15 @@
-# Prevent ACF Timeouts
+=== ACF Prevent Timeouts ===
+Contributors: Hube2
+Tags: advanced custom fields, acf, add on, timeout, prevent
+Requires at least: 4.0.0
+Tested up to: 4.7.0
+Stable tag: 0.0.1
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+
+Eliminates ACF Timout Issues
+
+== Description ==
 
 This plugin is for use with Advanced Custom Fields (ACF) and will work with any version of ACF
 that includes the hooks 'acf/save_post' and 'acf/update_value'. As far as I know this means any
@@ -16,42 +27,47 @@ When it appears the the update is taking too long and a timeout may be iminent, 
 sends the user to a temporary page so that the update can continue in the background. Once the update is
 complete then the user is sent on there way to the page that they were supposed to get to after the update.
 
-![screenshot](https://github.com/Hube2/acf-prevent-timeouts/blob/master/screenshot-1.png)
-
 Please note again, like I said above, this plugin does not correct the issue in ACF assocaited with
 saving many custom fields. The bigger problem for me is the timeout that happens when the number of
 fields becomes too large. While a slow admin may be a little frustrating to some, an admin page
 that crashes is unexceptable. I may not be able to speed things up I can stop the page from crashing.
 
-## Important Note
+***Important Note***
 
 Please ensure that your site and all ACF save processes are working correctly and without any error
 before activating this pluging. Any errors that may occur when the temporary page is being shown
 will not be visible. These errors can prevent the correct saving of custom field data.
 
+== Screenshots ==
 
-### Filters
+1. Temorary Page
+
+== Installation ==
+
+Intall like any other plugin
+
+== Other Notes ==
+
+== Filters ==
 
 There are some adjustments that you can make to this plugin using filters.
 
-##### Timeout
+**Timeout**
 
 The timeout is set to 20 seconds. When the page has been processing for this amount of time it will
 trigger the temporary page will be shown. You can change this duration by adding the following filter
 to your functions.php file
-```
+
+`
 add_filter('acf/prevent-timout/time', 'my_acf_timeout_time');
 function my_acf_timeout_time($time) {
   // set time to 10 seconds
 	$time = 10;
 	return $time;
 }
-```
+`
 
-### Updates
+== Changelog ==
 
-This plugin is currently set up to work with [GitHub Updater](https://github.com/afragen/github-updater).
-If it seems popular and useful I will publish it to WordPress.org.
-
-
-
+= 0.0.1 =
+* First commit to GitHub
