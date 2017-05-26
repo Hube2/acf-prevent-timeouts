@@ -10,11 +10,11 @@ and flexible content than it can handle and when they save it the page just time
 
 This pluign is a means to prevent this situation. This plugin does not speed up the process of saving
 the updates, but it does prevent the timeout error situation by intervening when the save process is
-taking to long.
+taking too long.
 
 When it appears the the update is taking too long and a timeout may be iminent, this plugin
 sends the user to a temporary page so that the update can continue in the background. Once the update is
-complete then the user is sent on there way to the page that they were supposed to get to after the update.
+complete then the user is sent on their way to the page that they were supposed to get to after the update.
 
 ![screenshot](https://github.com/Hube2/acf-prevent-timeouts/blob/master/screenshot-1.png)
 
