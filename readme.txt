@@ -7,7 +7,7 @@ Stable tag: 0.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Eliminates ACF Timout Issues
+Eliminates ACF timeout Issues
 
 == Description ==
 
@@ -59,7 +59,7 @@ trigger the temporary page will be shown. You can change this duration by adding
 to your functions.php file
 
 `
-add_filter('acf/prevent-timout/time', 'my_acf_timeout_time');
+add_filter('acf/prevent-timeout/time', 'my_acf_timeout_time');
 function my_acf_timeout_time($time) {
   // set time to 10 seconds
 	$time = 10;
