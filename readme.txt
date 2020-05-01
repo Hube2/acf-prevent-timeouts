@@ -2,8 +2,8 @@
 Contributors: Hube2
 Tags: advanced custom fields, acf, add on, timeout, prevent
 Requires at least: 4.0.0
-Tested up to: 4.7.0
-Stable tag: 0.0.1
+Tested up to: 5.4 
+Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -68,6 +68,9 @@ function my_acf_timeout_time($time) {
 `
 
 == Changelog ==
+
+= 1.0.0 =
+Imporved filters by passing current post ID
 
 = 0.0.1 =
 * First commit to GitHub

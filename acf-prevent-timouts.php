@@ -5,7 +5,7 @@
 		Plugin URI: https://github.com/Hube2/acf-prevent-timeouts
 		GitHub Plugin URI: https://github.com/Hube2/acf-prevent-timeouts
 		Description: Eliminates ACF timeout Issues
-		Version: 0.0.1
+		Version: 1.0.0
 		Author: John A. Huebner II
 		Author URI: https://github.com/Hube2
 
@@ -31,6 +31,7 @@
 		private $error_text = '';
 		private $all_clear = false;
 		private $fields_processed = 0;
+		private $post_id = 0; // post id being processed
 
 		public function __construct() {
 			$this->start_time = microtime(true);
@@ -41,15 +42,29 @@
 		public function init() {
 			$priority = apply_filters('acf/prevent-timeout/priority-before', -99999);
 			add_action('acf/save_post', array($this, 'acf_save_post_before'), $priority);
+			//add_action('acf/save_post', array($this, 'acf_save_total'), 999999);
 		} // end public function init
+		
+		public function acf_save_total($post_id) {
+
+			$time_now = microtime(true);
+			
+			//$this->write_to_file(array('$time_now' => $time_now,'$this->start_time' => $this->start_time,'$time_now - $this->start_time' => $time_now - $this->start_time));
+			if ($time_now - $this->start_time < $this->max_time) {
+				//$this->write_to_file('no timeout');
+			}
+		} // end public function acf_save_total
 
 		public function acf_save_post_before($post_id) {
+			$this->post_id = $post_id;
 			// this function runs before all other acf/save_post actions
 			// make sure there isn't a flag set for post id
 			// if there is then clear it
 			// set uniqid
+			//$this->write_to_file('SAVE POST STARTED');
+			//$this->write_to_file(ini_get('max_execution_time'), 'MAX EXECUTION TIME');
 			$this->id = uniqid('acf-prevent-timeouts-', true);
-			$this->max_time = apply_filters('acf/prevent-timeout/time', $this->max_time);
+			$this->max_time = apply_filters('acf/prevent-timeout/time', $this->max_time, $post_id);
 
 			add_action('acf/update_value', array($this, 'update_value'), 10, 3);
 		} // end public function acf_save_post_before
@@ -60,18 +75,29 @@
 			// time limit will be set
 			// flag will be set for the post id
 			// executions will continue
+			//$this->write_to_file($field, 'FIELD UPDATED');
+			
 			$this->fields_processed++;
 
 			$time_now = microtime(true);
+			/*
+			$this->write_to_file(array(
+				'$time_now' => $time_now,
+				'$this->start_time' => $this->start_time,
+				'$time_now - $this->start_time' => $time_now - $this->start_time
+			));
+			*/
 			if ($time_now - $this->start_time < $this->max_time) {
+				//$this->write_to_file('no timeout');
 				return $value;
 			}
+			//$this->write_to_file('timeout');
 			// timed out
 			$this->output_and_continue();
 			$this->timed_out = true;
 			$this->update_option();
 			// remove this filter and add a filter to check for errors
-			remove_filter('acf/update_value', array($this, 'update_value'));
+			remove_filter('acf/update_value', array($this, 'update_value'), 10);
 			add_action('acf/update_value', array($this, 'count_fields_processed'), 10, 3);
 
 			// add action to fire after update
@@ -292,24 +318,24 @@
 	<body id="error-page">
 		<h1><?php
 			$text = 'Your Request is Being Processed';
-			echo apply_filters('acf/prevent-timeout/timeout-page/heading', $text); ?></h1>
+			echo apply_filters('acf/prevent-timeout/timeout-page/heading', $text, $this->post_id); ?></h1>
 		<p class="message">
 			<?php
 				$text = 'It is taking longer than expected to process your request.';
-				echo apply_filters('acf/prevent-timeout/timeout-page/message', $text);
+				echo apply_filters('acf/prevent-timeout/timeout-page/message', $text, $this->post_id);
 			?>
 		</p>
 		<p id="stand-by">
 			<?php
 				$text = 'Please Stand By.';
-				echo apply_filters('acf/prevent-timeout/timeout-page/standby', $text);
+				echo apply_filters('acf/prevent-timeout/timeout-page/standby', $text, $this->post_id);
 			?>
 		</p>
 		<p class="note">
 			<?php
-				$text = 'This is not an error.<br />'.
-								'You will be redirected back to what you were doing as soon as the process in completed.';
-				echo apply_filters('acf/prevent-timeout/timeout-page/note', $text);
+				$text = '<strong style="color:#A00;">This is not an error.</strong><br />'.
+								'You will be redirected back to what you were doing as soon as processing in completed.';
+				echo apply_filters('acf/prevent-timeout/timeout-page/note', $text, $this->post_id);
 			?>
 		</p>
 	</body>
@@ -388,6 +414,26 @@
 			$this->update_option();
 			exit;
 		} // end public function wp_redirect
+		
+		private function write_to_file($value, $comment='') {
+			// this function for testing & debuggin only
+			$file = dirname(__FILE__).'/-data-'.date('Y-m-d-h-i').'.txt';
+			$handle = fopen($file, 'a');
+			ob_start();
+			if ($comment) {
+				echo $comment.":\r\n";
+			}
+			if (is_array($value) || is_object($value)) {
+				print_r($value);
+			} elseif (is_bool($value)) {
+				var_dump($value);
+			} else {
+				echo $value;
+			}
+			echo "\r\n\r\n";
+			fwrite($handle, ob_get_clean());
+			fclose($handle);
+		} // end private function write_to_file
 
 	} // end class acf_prevent_timeout
 

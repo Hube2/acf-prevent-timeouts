@@ -40,8 +40,8 @@ The timeout is set to 20 seconds. When the page has been processing for this amo
 trigger the temporary page will be shown. You can change this duration by adding the following filter
 to your functions.php file
 ```
-add_filter('acf/prevent-timeout/time', 'my_acf_timeout_time');
-function my_acf_timeout_time($time) {
+add_filter('acf/prevent-timeout/time', 'my_acf_timeout_time', 10, 2);
+function my_acf_timeout_time($time, $post_id) {
   // set time to 10 seconds
 	$time = 10;
 	return $time;
