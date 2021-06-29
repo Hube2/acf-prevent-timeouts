@@ -5,7 +5,7 @@
 		Plugin URI: https://github.com/Hube2/acf-prevent-timeouts
 		GitHub Plugin URI: https://github.com/Hube2/acf-prevent-timeouts
 		Description: Eliminates ACF timeout Issues
-		Version: 1.0.0
+		Version: 1.0.1
 		Author: John A. Huebner II
 		Author URI: https://github.com/Hube2
 
@@ -66,10 +66,10 @@
 			$this->id = uniqid('acf-prevent-timeouts-', true);
 			$this->max_time = apply_filters('acf/prevent-timeout/time', $this->max_time, $post_id);
 
-			add_action('acf/update_value', array($this, 'update_value'), 10, 3);
+			add_filter('acf/pre_update_value', array($this, 'update_value'), 0, 4);
 		} // end public function acf_save_post_before
 
-		public function update_value($value, $post_id, $field) {
+		public function update_value($check, $value, $post_id, $field) {
 			// this function will run every time a field value is updates
 			// if we reach max time then output will be sent to the browser
 			// time limit will be set
@@ -87,9 +87,10 @@
 				'$time_now - $this->start_time' => $time_now - $this->start_time
 			));
 			*/
+			//echo $time_now - $this->start_time;die;
 			if ($time_now - $this->start_time < $this->max_time) {
 				//$this->write_to_file('no timeout');
-				return $value;
+				return $check;
 			}
 			//$this->write_to_file('timeout');
 			// timed out
@@ -97,15 +98,14 @@
 			$this->timed_out = true;
 			$this->update_option();
 			// remove this filter and add a filter to check for errors
-			remove_filter('acf/update_value', array($this, 'update_value'), 10);
+			remove_filter('acf/pre_update_value', array($this, 'update_value'), 0);
 			add_action('acf/update_value', array($this, 'count_fields_processed'), 10, 3);
 
 			// add action to fire after update
 			$priority = apply_filters('acf/prevent-timeout/priority-after', 99999);
 			add_action('acf/save_post', array($this, 'acf_save_post_after'), $priority);
-
 			// don't forget to return $value
-			return $value;
+			return $check;
 		} // end public function update_value
 
 		public function count_fields_processed($value, $post_id, $field) {
@@ -116,14 +116,15 @@
 		} // end private function public
 
 		private function output_and_continue() {
+			//ini_set('display_errors', 1);
 			while (ob_get_level()) {
 				ob_end_clean();
 			}
 			if (function_exists('apache_setenv')) {
 				apache_setenv('no-gzip', 1);
 			}
-			header('X-Accel-Buffering: no');
 			ini_set('zlib.output_compression', 0);
+			header('X-Accel-Buffering: no');
 			set_time_limit(0);
 			ignore_user_abort(true);
 			ob_start();
@@ -133,6 +134,9 @@
 			header('Content-Length: '.$size);
 			ob_end_flush();
 			flush();
+			if (function_exists('fastcgi_finish_request')) {
+				fastcgi_finish_request();
+			}
 			ob_start();
 		} // end private function output_and_continue
 
@@ -152,11 +156,6 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta name="viewport" content="width=device-width">
-		<?php
-			if (function_exists('wp_no_robots')) {
-				wp_no_robots();
-			}
-		?>
 		<title><?php
 			$text = 'Processing Request';
 			echo apply_filters('acf/prevent-timeout/timeout-page/title', $text);
@@ -436,5 +435,3 @@
 		} // end private function write_to_file
 
 	} // end class acf_prevent_timeout
-
-?>
