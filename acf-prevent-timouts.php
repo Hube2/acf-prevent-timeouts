@@ -5,7 +5,7 @@
 		Plugin URI: https://github.com/Hube2/acf-prevent-timeouts
 		GitHub Plugin URI: https://github.com/Hube2/acf-prevent-timeouts
 		Description: Eliminates ACF timeout Issues
-		Version: 1.0.1
+		Version: 1.0.2
 		Author: John A. Huebner II
 		Author URI: https://github.com/Hube2
 
@@ -330,6 +330,7 @@
 				echo apply_filters('acf/prevent-timeout/timeout-page/standby', $text, $this->post_id);
 			?>
 		</p>
+		<p id="elapsed-time">Elapsed Time: </p>
 		<p class="note">
 			<?php
 				$text = '<strong style="color:#A00;">This is not an error.</strong><br />'.
