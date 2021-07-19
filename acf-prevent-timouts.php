@@ -5,7 +5,7 @@
 		Plugin URI: https://github.com/Hube2/acf-prevent-timeouts
 		GitHub Plugin URI: https://github.com/Hube2/acf-prevent-timeouts
 		Description: Eliminates ACF timeout Issues
-		Version: 1.0.2
+		Version: 1.0.3
 		Author: John A. Huebner II
 		Author URI: https://github.com/Hube2
 
@@ -20,7 +20,7 @@
 
 	class acf_prevent_timeout {
 
-		private $version = '0.0.1';
+		private $version = '1.0.3';
 		private $start_time = NULL;
 		private $max_time = 20; // max time in seconds to run before timeout page
 		private $timed_out = false;
@@ -40,6 +40,11 @@
 		} // end public function __construct
 
 		public function init() {
+			
+			if (strpos($_SERVER['REQUEST_URI'], 'nav-menus.php') !== false) {
+				return;
+			}
+			
 			$priority = apply_filters('acf/prevent-timeout/priority-before', -99999);
 			add_action('acf/save_post', array($this, 'acf_save_post_before'), $priority);
 			//add_action('acf/save_post', array($this, 'acf_save_total'), 999999);
